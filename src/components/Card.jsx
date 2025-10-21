@@ -1,16 +1,3 @@
-/**
- * @typedef Product
- * @property {number} id
- * @property {string} title
- * @property {string} description
- * @property {string} category
- * @property {number} price - Float
- * @property {number} discountPercentage - Float
- * @property {number} rating - Float
- * @property {number} stock - Float
- * @property {Array<string>} images
- * @property {string} thumbnail
- */
 
 /**
  *
