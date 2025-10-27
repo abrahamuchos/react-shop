@@ -3,9 +3,8 @@ import { createContext, useState } from "react";
 // eslint-disable-next-line react-refresh/only-export-components
 export const FiltersContext = createContext();
 
-
 export function FiltersProvider({children}) {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState(/**@type {{category: string, minPrice: number}} filters*/{
     category: 'all',
     minPrice: 0
   });
@@ -16,3 +15,4 @@ export function FiltersProvider({children}) {
     </FiltersContext.Provider>
   )
 }
+

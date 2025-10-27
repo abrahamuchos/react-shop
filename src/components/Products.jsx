@@ -11,15 +11,12 @@
  * @property {Array<string>} images
  * @property {string} thumbnail
  */
-import { useState } from "react";
-
 import { useFilters } from "../Hooks/useFilters.js";
-import { products as initialProducts } from '../mocks/products.json';
+import { products } from '../mocks/products.json';
 
 import Card from "./Card.jsx";
 
 export default function Products() {
-  const [products, setProducts] = useState(/**@type {Array<Product>}*/ initialProducts);
   const {filterProduct} = useFilters();
 
   const filteredProduct = filterProduct(products);
