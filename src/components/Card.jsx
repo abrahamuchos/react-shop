@@ -1,3 +1,4 @@
+import { useCart } from "../Hooks/useCart.js";
 
 /**
  *
@@ -6,6 +7,13 @@
  * @constructor
  */
 export default function Card({product}) {
+  const {existsItem, addItem} = useCart();
+  const isInACart = existsItem(product.id);
+
+  const handleAddCartItem = (product) => {
+    addItem(product);
+  }
+
 
   return (
     <div className='flex flex-col gap-4 border-2 border-violet-300 rounded-2xl'>
@@ -25,7 +33,16 @@ export default function Card({product}) {
 
         {/*Card CTA*/}
         <div className='mt-2'>
-          <button className='bg-red-400 py-2 px-4 rounded-lg'>Add Cart</button>
+          <button
+            className={(isInACart ? 'bg-red-300' :'bg-red-400') + ' py-2 px-4 rounded-lg'}
+            onClick={() => handleAddCartItem(product)}
+            disabled={isInACart}
+          >
+            { isInACart ?
+              'Añadido al carrito'
+              : 'Agregar al carrito'
+            }
+          </button>
         </div>
         {/*End Card CTA*/}
       </div>

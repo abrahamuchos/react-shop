@@ -1,16 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CartItem from "./CartItem.jsx";
 
 import { FaShoppingCart } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { useCart } from "../Hooks/useCart.js";
 
 export default function Cart() {
   const [isVisible, setIsVisible] = useState(/**@type {boolean}*/false)
+  const [calc, setCalc] = useState({
+    subtotal: 0,
+    tax: 0,
+    total: 0,
+  })
+  const {cart} = useCart();
 
+  /**
+   * Show and hide cart
+   */
   const handleToggleCart = () => {
     setIsVisible(prevState => !prevState)
   }
+
+  const calcCart = () => {
+    let subTotal = 0;
+    cart.forEach((item) => subTotal += (item.price * item.qty))
+    const tax =  Math.round(((subTotal * 16)/100))/100;
+    const total = Math.round((subTotal + tax) * 100)/100;
+    console.log(subTotal)
+    return {subTotal, tax, total};
+  }
+
+  useEffect(() => {
+    if(cart.length){
+      const {subTotal, tax, total} = calcCart();
+      setCalc({
+        subtotal: subTotal,
+        tax: tax,
+        total: total,
+      })
+    }
+  }, [cart]);
 
   return (
     <>
@@ -24,22 +54,32 @@ export default function Cart() {
 
       {/*Cart list items*/}
       <aside className={isVisible ? 'block' : 'hidden'}>
+        <h2>My Cart</h2>
         <ul className='w-full'>
-          <li>
-            <CartItem/>
-          </li>
-          <hr/>
-          <li>
-            <CartItem/>
-          </li>
-          <hr/>
+          {cart.map((item) => (
+            <li key={item.id}>
+              <CartItem item={item}/>
+              <hr/>
+            </li>
+          ))
+          }
+
         </ul>
 
         {/*Cart Info*/}
         <div className='text-right'>
-          <h3 className='text-xl'>Sub Total: $3405</h3>
-          <h3 className='text-xl'>Tax (16%): $100</h3>
-          <h3 className='text-3xl mt-2.5'>Total: $3505</h3>
+          <h3 className='text-xl'>
+            {/*TODO: ARREGLAR EL CONTADOR DE PRODUCTOS CUANDO AGREGO MAS DE UNA CANTIDAD*/}
+            Sub Total ({cart.length} product):
+            <span className='font-bold pl-2.5'>US${calc.subtotal}</span>
+          </h3>
+          <h3 className='text-xl'>
+            Tax (16%):
+            <span className='font-bold pl-2.5'>US${calc.tax}</span>
+          </h3>
+          <h3 className='text-3xl mt-2.5'>Total:
+            <span className='font-bold pl-2.5'>US${calc.total}</span>
+          </h3>
         </div>
         {/*End Cart Info*/}
       </aside>
