@@ -45,6 +45,7 @@ export default function CartItem({item}) {
         className='w-1/2 md:w-3/12'
       />
 
+      {/*Cart Item Info*/}
       <div className='text-left'>
         <h3 className='text-lg font-bold mb-4'>{item.title}</h3>
         <div className='flex items-center gap-2'>
@@ -74,7 +75,7 @@ export default function CartItem({item}) {
           Remove
         </button>
       </div>
-
+      {/*End Cart Item Info*/}
     </div>
   );
 }

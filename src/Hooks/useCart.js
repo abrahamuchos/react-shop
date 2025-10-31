@@ -4,7 +4,7 @@ import { CartContext } from "../context/cart.jsx";
 
 
 function useCart(){
-  const {cart, setCart} =  useContext(CartContext);
+  const {cart, setCart } =  useContext(CartContext);
 
   /**
    * Add new item into cart
@@ -12,8 +12,8 @@ function useCart(){
    * @param {number} [qty=1]
    */
   const addItem = (item, qty = 1) => {
-    setCart((prevState) => ([
-      ...prevState,
+    setCart((prevCart) => ([
+      ...prevCart,
       {
         ...item,
         qty: qty,
@@ -26,8 +26,8 @@ function useCart(){
    * @param {number} id - Product id
    */
   const removeItem = (id) => {
-    setCart((prevState) =>
-      prevState.filter((item) => item.id !== id)
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.id !== id)
     );
   }
 
@@ -40,12 +40,16 @@ function useCart(){
     return !!cart.find((item) => item.id === id)
   }
 
+  /**
+   * Add quantity
+   * @param {number} id - Product id
+   */
   const addQty = (id) => {
-    setCart((prevState) => {
-      const itemToUpdate = prevState.find(item => item.id === id);
+    setCart((prevCart) => {
+      const itemToUpdate = prevCart.find(item => item.id === id);
 
       return ([
-        ...prevState.filter((item) => item !== itemToUpdate),
+        ...prevCart.filter((item) => item.id !== id),
         {
           ...itemToUpdate,
           qty: itemToUpdate.qty + 1,
@@ -54,16 +58,20 @@ function useCart(){
     });
   }
 
+  /**
+   * Subtract quantity
+   * @param {number} id - Product id
+   */
   const subtractQty = (id) => {
-    setCart((prevState) => {
-      const itemToUpdate = prevState.find(item => item.id === id);
+    setCart((prevCart) => {
+      const itemToUpdate = prevCart.find(item => item.id === id);
 
       if(itemToUpdate.qty === 1) {
-        return prevState;
+        return prevCart;
 
       }else{
         return ([
-          ...prevState.filter((item) => item !== itemToUpdate),
+          ...prevCart.filter((item) => item !== itemToUpdate),
           {
             ...itemToUpdate,
             qty: itemToUpdate.qty - 1,
@@ -73,7 +81,19 @@ function useCart(){
     });
   }
 
-  return {cart, addItem, removeItem, existsItem, addQty, subtractQty}
+  /**
+   * Count all items into a cart
+   * @returns {number}
+   */
+  const totalItems = () => {
+    let count = 0;
+
+    cart.forEach((item) => count += item.qty);
+
+    return count;
+  }
+
+  return {cart, addItem, removeItem, existsItem, addQty, subtractQty, totalItems}
 }
 
 export { useCart };

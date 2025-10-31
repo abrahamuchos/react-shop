@@ -12,8 +12,9 @@ export default function Cart() {
     subtotal: 0,
     tax: 0,
     total: 0,
-  })
-  const {cart} = useCart();
+    totalItems: 0,
+  });
+  const {cart, totalItems} = useCart();
 
   /**
    * Show and hide cart
@@ -27,17 +28,20 @@ export default function Cart() {
     cart.forEach((item) => subTotal += (item.price * item.qty))
     const tax =  Math.round(((subTotal * 16)/100))/100;
     const total = Math.round((subTotal + tax) * 100)/100;
-    console.log(subTotal)
+
     return {subTotal, tax, total};
   }
 
   useEffect(() => {
     if(cart.length){
       const {subTotal, tax, total} = calcCart();
+      const items = totalItems();
+
       setCalc({
         subtotal: subTotal,
         tax: tax,
         total: total,
+        totalItems: items
       })
     }
   }, [cart]);
@@ -69,8 +73,7 @@ export default function Cart() {
         {/*Cart Info*/}
         <div className='text-right'>
           <h3 className='text-xl'>
-            {/*TODO: ARREGLAR EL CONTADOR DE PRODUCTOS CUANDO AGREGO MAS DE UNA CANTIDAD*/}
-            Sub Total ({cart.length} product):
+            Sub Total ({calc.totalItems} product):
             <span className='font-bold pl-2.5'>US${calc.subtotal}</span>
           </h3>
           <h3 className='text-xl'>
