@@ -10,7 +10,6 @@
  * @property {number} qty
  */
 
-import { useCart } from "../Hooks/useCart.js";
 import { useContext } from "react";
 import { CartContext } from "../context/cart.jsx";
 
@@ -21,7 +20,6 @@ import { CartContext } from "../context/cart.jsx";
  * @constructor
  */
 export default function CartItem({item}) {
-  // const {removeItem, addQty, subtractQty} = useCart();
   const {removeItem, addQty, subtractQty} = useContext(CartContext);
 
   /**
