@@ -3,9 +3,13 @@ import './index.css'
 import App from './App.jsx'
 
 import { FiltersProvider } from "./context/filters.jsx";
+import CartProvider from "./context/cart.jsx";
 
 createRoot(document.getElementById('root')).render(
-  <FiltersProvider>
-    <App />
-  </FiltersProvider>,
+  <CartProvider>
+    <FiltersProvider>
+      <App />
+    </FiltersProvider>
+  </CartProvider>
+,
 )
