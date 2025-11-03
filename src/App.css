@@ -11,6 +11,10 @@
 
 @layer base{
   body{
-    @apply text-sm bg-green-50;
+    @apply text-sm bg-lightRose text-gray-800;
   }
+}
+
+.btn-primary{
+  @apply text-base bg-darkGreen text-white border-white rounded-2xl py-2 px-10 hover:cursor-pointer transition-colors hover:bg-lightGreen disabled:bg-grayOlga disabled:cursor-not-allowed
 }
