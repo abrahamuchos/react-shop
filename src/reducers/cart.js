@@ -18,7 +18,16 @@
  * @typedef {[State, function(Action): void]} UseCartResult
  * El array retornado por el hook useCounter: [estado, dispatch].
  */
-export const cartInitialState = [];
+export const cartInitialState = JSON.parse(window.localStorage.getItem('cart'))|| [];
+
+/**
+ *
+ * @param {Array<State>} cart
+ */
+const updateLocalStorage = (cart) => {
+  const cartParse = JSON.stringify(cart);
+  window.localStorage.setItem('cart', cartParse);
+}
 
 /**
  *
@@ -30,33 +39,42 @@ export const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM": {
       const item = action.payload;
-      return [
+      const newState = [
         ...state,
         {
           ...item,
           qty: 1
         }
-      ]
+      ];
+      updateLocalStorage(newState);
+
+      return newState
     }
     case "REMOVE_ITEM": {
       const id = action.payload;
-      return state.filter((item) => item.id !== id)
+      const newState = state.filter((item) => item.id !== id);
+      updateLocalStorage(newState);
+
+      return newState;
     }
     case "ADD_QTY": {
       const id = action.payload;
       const itemIndex = state.findIndex(item => item.id === id)
 
       if(itemIndex >= 0){
-        return ([
+        const newState = [
           ...state.slice(0, itemIndex),
           {
             ...state[itemIndex],
             qty: state[itemIndex].qty + 1
           },
           ...state.slice(itemIndex + 1)
-        ]);
+        ];
+        updateLocalStorage(newState);
+
+        return newState;
       }else{
-        throw new Error(`Item no encontrado, no es posible agregar cantidad`);
+        throw new Error(`Item not found, it is not possible to add quantity`);
       }
     }
     case "SUBTRACT_QTY": {
@@ -64,19 +82,22 @@ export const cartReducer = (state, action) => {
       const itemIndex = state.findIndex(item => item.id === id)
 
       if(itemIndex >= 0 && state[itemIndex].qty > 1){
-        return ([
+        const newState = [
           ...state.slice(0, itemIndex),
           {
             ...state[itemIndex],
             qty: state[itemIndex].qty - 1
           },
           ...state.slice(itemIndex + 1)
-        ]);
+        ];
+        updateLocalStorage(newState);
+
+        return newState;
       }else{
-        throw new Error(`Item no encontrado, no es posible agregar cantidad`);
+        throw new Error(`Item not found, quantity cannot be subtracted`);
       }
     }
     default:
-      throw new Error(`Acción no soportada: ${action.type}`);
+      throw new Error(`Action cannot be support: ${action.type}`);
   }
 }
