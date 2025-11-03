@@ -7,7 +7,7 @@ import { CartContext } from "../context/cart.jsx";
  * @returns {JSX.Element}
  * @constructor
  */
-export default function Card({product}) {
+export default function Card({product}) {1
   const {addItem, existsItem} = useContext(CartContext);
   const isInACart = existsItem(product.id);
 
@@ -21,25 +21,25 @@ export default function Card({product}) {
 
 
   return (
-    <div className='flex flex-col gap-4 border-2 border-violet-300 rounded-2xl'>
+    <div className='flex flex-col gap-4 bg-white border-2 border-white rounded-2xl'>
       {/*Card Img*/}
       <img src={product.thumbnail} alt={product.title}/>
       {/*End Card Img*/}
 
       {/*Card Body*/}
-      <div className='px-4 py-2 border-t-2 border-violet-300 bg-violet-200 rounded-b-2xl'>
+      <div className='px-4 py-2 rounded-b-2xl'>
         {/*Card Info*/}
         <div>
-          <h3 className='text-lg font-bold max-h-7 truncate'>{product.title}</h3>
-          <span>{product.category}</span>
-          <span>$ {product.price}</span>
+          <h3 className='text-xl font-bold max-h-7 truncate'>{product.title}</h3>
+          <p className='text-sm text-slate-800'>{product.category}</p>
+          <p className='text-lg font-bold'>$ {product.price}</p>
         </div>
         {/*End Card Info*/}
 
         {/*Card CTA*/}
         <div className='mt-2'>
           <button
-            className={(isInACart ? 'bg-red-300' : 'bg-red-400') + ' py-2 px-4 rounded-lg'}
+            className='btn-primary'
             onClick={() => handleAddCartItem(product)}
             disabled={isInACart}
           >
