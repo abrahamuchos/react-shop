@@ -62,14 +62,14 @@ export default function Cart() {
     <>
       {/*Cart CTA*/}
       <div className='flex justify-end my-5 lg:my-7'>
-        <button className='bg-red-400 rounded-full p-2' onClick={handleToggleCart}>
+        <button className='btn-primary rounded-full !p-2' onClick={handleToggleCart}>
           {isVisible ? <MdClose/> : <FaShoppingCart/>}
         </button>
       </div>
       {/*End Cart CTA*/}
 
       {/*Cart list items*/}
-      <aside className={isVisible ? 'block' : 'hidden'}>
+      <aside className={(isVisible ? 'block' : 'hidden' )+ ' bg-white border-white rounded-3xl py-10 px-5 mb-10 lg:px-7'}>
         <h2 className='font-bold text-2xl mb-7'>My Cart</h2>
         {cart.length
           ? <ul className='w-full'>
@@ -84,11 +84,10 @@ export default function Cart() {
           : <div className='min-h-10 flex justify-center lg:min-h-32'>
             <p className='text-lg self-center'>There are no items in your cart yet</p>
           </div>
-
         }
 
         {/*Cart Info*/}
-        <div className='text-right'>
+        <div className='text-right pt-10'>
           <h3 className='text-xl'>
             Sub Total ({calc.totalItems} product):
             <span className='font-bold pl-2.5'>US${calc.subtotal}</span>
