@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { CartContext } from "../context/cart.jsx";
 import CartItem from "./CartItem.jsx";
 
 import { FaShoppingCart } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { useCart } from "../Hooks/useCart.js";
 
 export default function Cart() {
+  const {cart, totalItems} = useContext(CartContext);
   const [isVisible, setIsVisible] = useState(/**@type {boolean}*/false)
   const [calc, setCalc] = useState({
     subtotal: 0,
@@ -14,7 +15,6 @@ export default function Cart() {
     total: 0,
     totalItems: 0,
   });
-  const {cart, totalItems} = useCart();
 
   /**
    * Show and hide cart
@@ -23,6 +23,10 @@ export default function Cart() {
     setIsVisible(prevState => !prevState)
   }
 
+  /**
+   * Calculate subtotal, tax and total to cart.
+   * @returns {{total: number, tax: number, subTotal: number}}
+   */
   const calcCart = () => {
     let subTotal = 0;
     cart.forEach((item) => subTotal += (item.price * item.qty))
@@ -42,7 +46,15 @@ export default function Cart() {
         tax: tax,
         total: total,
         totalItems: items
-      })
+      });
+
+    }else{
+      setCalc({
+        subtotal: 0,
+        tax: 0,
+        total: 0,
+        totalItems: 0,
+      });
     }
   }, [cart]);
 
@@ -58,17 +70,22 @@ export default function Cart() {
 
       {/*Cart list items*/}
       <aside className={isVisible ? 'block' : 'hidden'}>
-        <h2>My Cart</h2>
-        <ul className='w-full'>
-          {cart.map((item) => (
-            <li key={item.id}>
-              <CartItem item={item}/>
-              <hr/>
-            </li>
-          ))
-          }
+        <h2 className='font-bold text-2xl mb-7'>My Cart</h2>
+        {cart.length
+          ? <ul className='w-full'>
+            {cart.map((item) => (
+              <li key={item.id}>
+                <CartItem item={item}/>
+                <hr/>
+              </li>
+            ))
+            }
+          </ul>
+          : <div className='min-h-10 flex justify-center lg:min-h-32'>
+            <p className='text-lg self-center'>There are no items in your cart yet</p>
+          </div>
 
-        </ul>
+        }
 
         {/*Cart Info*/}
         <div className='text-right'>

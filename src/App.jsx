@@ -10,9 +10,6 @@ function App() {
     <main className=''>
       <Header/>
       <Cart/>
-
-      <div className="bg-blue-100 w-full h-[100px]"></div>
-
       <Products/>
     </main>
   )

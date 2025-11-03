@@ -3,8 +3,9 @@ import { useContext } from "react";
 import { CartContext } from "../context/cart.jsx";
 
 
-function useCart(){
-  const {cart, setCart } =  useContext(CartContext);
+
+function useCart() {
+  const {cart, setCart} = useContext(CartContext);
 
   /**
    * Add new item into cart
@@ -12,13 +13,7 @@ function useCart(){
    * @param {number} [qty=1]
    */
   const addItem = (item, qty = 1) => {
-    setCart((prevCart) => ([
-      ...prevCart,
-      {
-        ...item,
-        qty: qty,
-      },
-    ]));
+
   }
 
   /**
@@ -26,11 +21,14 @@ function useCart(){
    * @param {number} id - Product id
    */
   const removeItem = (id) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.id !== id)
-    );
+    // setCart((prevCart) =>
+    //   prevCart.filter((item) => item.id !== id)
+    // );
+
+
   }
 
+  //TODO este no altera el estado solo hace una comprobacion. No se si meterlo en el reduce
   /**
    * Validate if item exists into cart
    * @param id
@@ -66,10 +64,10 @@ function useCart(){
     setCart((prevCart) => {
       const itemToUpdate = prevCart.find(item => item.id === id);
 
-      if(itemToUpdate.qty === 1) {
+      if (itemToUpdate.qty === 1) {
         return prevCart;
 
-      }else{
+      } else {
         return ([
           ...prevCart.filter((item) => item !== itemToUpdate),
           {
@@ -81,6 +79,7 @@ function useCart(){
     });
   }
 
+  //TODO este no altera el estado solo hace una comprobacion. No se si meterlo en el reduce
   /**
    * Count all items into a cart
    * @returns {number}

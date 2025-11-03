@@ -1,4 +1,5 @@
-import { useCart } from "../Hooks/useCart.js";
+import { useContext } from "react";
+import { CartContext } from "../context/cart.jsx";
 
 /**
  *
@@ -7,9 +8,13 @@ import { useCart } from "../Hooks/useCart.js";
  * @constructor
  */
 export default function Card({product}) {
-  const {existsItem, addItem} = useCart();
+  const {addItem, existsItem} = useContext(CartContext);
   const isInACart = existsItem(product.id);
 
+  /**
+   * Handle add item to cart
+   * @param {Product} product
+   */
   const handleAddCartItem = (product) => {
     addItem(product);
   }
@@ -34,11 +39,11 @@ export default function Card({product}) {
         {/*Card CTA*/}
         <div className='mt-2'>
           <button
-            className={(isInACart ? 'bg-red-300' :'bg-red-400') + ' py-2 px-4 rounded-lg'}
+            className={(isInACart ? 'bg-red-300' : 'bg-red-400') + ' py-2 px-4 rounded-lg'}
             onClick={() => handleAddCartItem(product)}
             disabled={isInACart}
           >
-            { isInACart ?
+            {isInACart ?
               'Añadido al carrito'
               : 'Agregar al carrito'
             }
