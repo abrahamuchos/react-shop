@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,3 +9,12 @@
   text-align: center;
 }
 
+@layer base{
+  body{
+    @apply text-sm bg-lightRose text-gray-800;
+  }
+}
+
+.btn-primary{
+  @apply text-base bg-darkGreen text-white border-white rounded-2xl py-2 px-10 hover:cursor-pointer transition-colors hover:bg-lightGreen disabled:bg-grayOlga disabled:cursor-not-allowed
+}
